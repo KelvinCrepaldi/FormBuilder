@@ -1,5 +1,7 @@
 import { createContext, useState, type ReactNode } from "react";
 import type { formLayoutTypes, formTypes, projectTypes } from "../types";
+import { useNavigate } from "react-router";
+import { db } from "@/database/dexie";
 
 type BuilderContextTypes = {
   forms: formTypes[];
@@ -16,14 +18,18 @@ type BuilderContextTypes = {
     optionId: string,
     newLabel: string
   ) => void;
+  getProject: () => { project: projectTypes; forms: formTypes[] };
+  playProject: () => void;
+  saveProject: () => void;
 };
 
 export const BuilderContext = createContext<BuilderContextTypes | null>(null);
 
 export default function BuilderProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [forms, setForms] = useState<formTypes[]>([]);
   const [project] = useState<projectTypes>({
-    id: "test",
+    ref: crypto.randomUUID(),
     description: "description of project",
     title: "Project title",
   });
@@ -41,7 +47,7 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
         id: newId,
         question: ``,
         options: [{ id: crypto.randomUUID(), label: "", value: "" }],
-        position: prev.length, // usa `prev` em vez de `forms` direto
+        position: prev.length,
         type,
       },
     ]);
@@ -63,8 +69,8 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
           ? {
               ...form,
               options: [
-                ...form.options,
-                { id: crypto.randomUUID(), label: "", value: "" }, // você pode adicionar mais campos se quiser
+                ...(form.options || []),
+                { id: crypto.randomUUID(), label: "", value: "" }
               ],
             }
           : form
@@ -78,7 +84,7 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
         form.id === formId
           ? {
               ...form,
-              options: form.options.filter((opt) => opt.id !== optionId),
+              options: form.options?.filter((opt) => opt.id !== optionId),
             }
           : form
       )
@@ -103,13 +109,26 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
         form.id === formId
           ? {
               ...form,
-              options: form.options.map((opt) =>
+              options: form.options?.map((opt) =>
                 opt.id === optionId ? { ...opt, label: newLabel } : opt
               ),
             }
           : form
       )
     );
+  };
+
+  const playProject = () => {
+    navigate("/form/demo");
+  };
+
+  const saveProject = async () => {
+    await db.DBproject.add({ ...project, forms });
+    navigate("/dashboard");
+  };
+
+  const getProject = (): { project: projectTypes; forms: formTypes[] } => {
+    return { project, forms };
   };
 
   return (
@@ -125,6 +144,9 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
         deleteOption,
         updateFormQuestion,
         updateOptionLabel,
+        getProject,
+        playProject,
+        saveProject,
       }}
     >
       {children}

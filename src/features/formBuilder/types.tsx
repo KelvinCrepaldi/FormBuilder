@@ -1,5 +1,5 @@
 export type projectTypes = {
-  id: string;
+  ref: string;
   title: string;
   description: string;
 };
@@ -11,7 +11,7 @@ export type formTypes = {
   question: string;
   position: number;
   type: formLayoutTypes;
-  options: optionTypes[];
+  options?: optionTypes[];
 };
 
 export type optionTypes = {

@@ -1,29 +1,32 @@
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
 
 export default function Hero() {
+  const navigate = useNavigate();
   return (
-    <section className="w-full flex px-10 gap-10 items-center min-h-[calc(100vh-80px)]">
-      <div className="w-1/2 flex flex-col items-start gap-2">
-        <div className="bg-black rounded-full text-white px-4 py-1 text-sm">
-          Lançado v1.0.0
-        </div>
+    <section className="w-full flex flex-col md:flex-row px-10 gap-10 items-center min-h-[calc(90vh-80px)]">
+      {/* Text content */}
+      <div className="w-full md:w-2/3 flex flex-col items-start gap-4">
+        <span className="px-3 py-1 text-xs font-medium rounded-full border text-primary">
+          🚀 Versão 1.0 já disponível
+        </span>
 
-        <h1 className="text-2xl font-bold">
-          Protótipo Criador de formulários <br />
-          Crie seu próprio formulário customizado
+        <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
+          Construa <span className="text-primary">formulários inteligentes</span> em minutos
         </h1>
 
-        <p className="text-base font-light">
-          Form Builder é um projeto criado com o intuito de usuários criarem
-          seus próprios formulários gerando tabelas em um dashboard customizado
+        <p className="text-lg text-muted-foreground max-w-3xl">
+          Crie, personalize e compartilhe formulários interativos sem complicação. 
+          Aplique testes, colete dados e transforme respostas em insights valiosos.
         </p>
 
-        <div className="flex gap-5 mt-2">
-          <Button>Veja Demonstração</Button>
-          <Button>Criar um novo!</Button>
+        <div className="flex gap-4 mt-4">
+          <Button size="lg" onClick={()=> navigate("/dashboard")}>Começar agora</Button>
+          <Button size="lg" variant="outline">Ver exemplos</Button>
         </div>
       </div>
-      <div className="w-1/2 bg-black/10 flex-1 h-full">img</div>
+
+
     </section>
   );
 }

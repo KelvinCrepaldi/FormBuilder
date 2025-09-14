@@ -2,23 +2,24 @@ import { X } from "lucide-react";
 import useBuilder from "../context/useBuilder";
 import type { optionTypes } from "../types";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type BuildOptionProps = {
   option: optionTypes;
   formId: string;
+  position: number;
 };
 
-export default function BuildOption({ option, formId }: BuildOptionProps) {
+export default function BuildOption({ option, formId, position }: BuildOptionProps) {
   const { deleteOption, updateOptionLabel } = useBuilder();
 
   return (
-    <div className="flex items-center justify-between border p-2 rounded bg-gray-50">
+    <div className="flex items-center justify-between gap-2">
       {/* Label editável */}
-      <input
-        className="flex-1 bg-transparent border-none focus:outline-none"
+      <Input
         value={option.label}
         onChange={(e) => updateOptionLabel(formId, option.id, e.target.value)}
-        placeholder="Digite a opção..."
+        placeholder={ `Digite a ${position}ª opção...`}
       />
 
       {/* Botão remover */}
