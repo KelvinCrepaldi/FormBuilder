@@ -7,7 +7,7 @@ export default function BuildCarousel() {
   const { forms, handleActive, deleteForm } = useBuilder();
 
   return (
-    <div className="p-2 w-full flex gap-2 ">
+    <div className="px-8 py-2 w-full flex gap-2 ">
       {forms.map((item) => (
         <Card
           className="cursor-pointer flex flex-row gap-2 p-2 items-center w-[200px] h-[100px] shadow border border-black/30 hover:border-black/50"

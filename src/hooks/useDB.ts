@@ -10,5 +10,14 @@ export default function useDB() {
     return await db.DBproject.where("ref").equals(ref).first();
   };
 
-  return { projects, getProjectById };
+  const deleteProjectByRef = async (ref: string) => {
+    return await db.DBproject.where("ref").equals(ref).delete();
+  };
+
+  const clearProjects = async () => {
+  return await db.DBproject.clear();
+};
+
+
+  return { projects, getProjectById, deleteProjectByRef, clearProjects };
 }

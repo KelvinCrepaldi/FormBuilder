@@ -1,12 +1,19 @@
+import { ChartPieDonutText } from "@/components/chatPieSample";
+import { ChartBarInteractive } from "@/components/chatSample";
+import { SiteHeader } from "@/components/siteHeader";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import type { DatabaseProjectTypes } from "@/database/dexie";
 import useDB from "@/hooks/useDB";
+import { ArrowDown, Trash } from "lucide-react";
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import ProjectList from "../components/projectList";
 
 export default function DashboardPage() {
-  const { projects } = useDB();
+  const navigate = useNavigate();
+  const { projects, clearProjects } = useDB();
   const [projectList, setProjectList] = useState<null | DatabaseProjectTypes[]>(
     null
   );
@@ -16,35 +23,32 @@ export default function DashboardPage() {
       setProjectList(list);
     };
     getList();
-  }, []);
+  }, [projects]);
 
   return (
-    <section className="flex flex-col gap-5">
-      <div className="w-full p-4 flex">
-        <h1 className="typhography-h1">Bem-vindo</h1>
-      </div>
+    <section className="flex flex-col gap-1">
+      <SiteHeader title="Dashboard" />
 
-      <div className="w-ful border-b mx-4"></div>
-      
-      <div className="flex gap-5 p-4 justify-center">
-        
-        <Card className="w-1/2 p-4">
-          <div className="typhography-h2 text-center">projetos</div>
-          <div className="text-center text-3xl font-bold">{projectList?.length}</div>
-          <div className="flex justify-end gap-2">
-            <Button variant={"outline"} className="w-1/2">Ver lista completa</Button>
-            <Button variant={"outline"} className="w-1/2">Criar novo</Button>
+      <div className="flex flex-col md:flex-row px-8">
+        <div className="flex flex-col gap-2 items-center justify-center flex-1">
+          <div className="flex flex-col  flex-1 w-full h-full">
+            <div className=" text-center flex-1">
+              <ProjectList/>
+            </div>
+            <div className="w-full border-t py-2 pr-2">
+              <div className=" flex gap-5 items-center justify-end">
+                <div className="">Limpar banco de dados:</div>
+                <Button onClick={() => clearProjects()}>
+                  <Trash />
+                </Button>
+              </div>
+            </div>
           </div>
-        </Card>
-
-        <Card className="w-1/2 p-4">
-          <div className="typhography-h2 text-center">Total de respostas</div>
-          <div className="text-center text-3xl font-bold">34.444</div>
-        </Card>
-
-       
+        </div>
+        <ChartPieDonutText />
       </div>
 
+      <ChartBarInteractive />
     </section>
   );
 }

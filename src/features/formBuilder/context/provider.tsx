@@ -5,11 +5,11 @@ import { db } from "@/database/dexie";
 
 type BuilderContextTypes = {
   forms: formTypes[];
+  active: string | null;
+  project: projectTypes;
   createForm: (type: formLayoutTypes) => void;
   deleteForm: (form: formTypes) => void;
-  active: string | null;
   handleActive: (id: string) => void;
-  project: projectTypes;
   createOption: (formId: string) => void;
   deleteOption: (formId: string, optionId: string) => void;
   updateFormQuestion: (formId: string, newQuestion: string) => void;
@@ -21,22 +21,34 @@ type BuilderContextTypes = {
   getProject: () => { project: projectTypes; forms: formTypes[] };
   playProject: () => void;
   saveProject: () => void;
+  cleanProject: () => void;
 };
 
 export const BuilderContext = createContext<BuilderContextTypes | null>(null);
 
+const newProjectForms: formTypes[] = [];
+
 export default function BuilderProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
-  const [forms, setForms] = useState<formTypes[]>([]);
-  const [project] = useState<projectTypes>({
+  const [forms, setForms] = useState<formTypes[]>(newProjectForms);
+  const [project, setProject] = useState<projectTypes>({
     ref: crypto.randomUUID(),
-    description: "description of project",
-    title: "Project title",
+    description: "Description...",
+    title: "New project",
   });
   const [active, setActive] = useState<null | string>(null);
 
   const handleActive = (id: string) => {
     setActive(id);
+  };
+
+  const cleanProject = () => {
+    setForms(newProjectForms);
+    setProject({
+      ref: crypto.randomUUID(),
+      description: "Description...",
+      title: "New project",
+    });
   };
 
   const createForm = (type: formLayoutTypes) => {
@@ -70,7 +82,7 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
               ...form,
               options: [
                 ...(form.options || []),
-                { id: crypto.randomUUID(), label: "", value: "" }
+                { id: crypto.randomUUID(), label: "", value: "" },
               ],
             }
           : form
@@ -125,6 +137,7 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
   const saveProject = async () => {
     await db.DBproject.add({ ...project, forms });
     navigate("/dashboard");
+    cleanProject();
   };
 
   const getProject = (): { project: projectTypes; forms: formTypes[] } => {
@@ -135,10 +148,10 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
     <BuilderContext.Provider
       value={{
         forms,
-        createForm,
         active,
-        handleActive,
         project,
+        createForm,
+        handleActive,
         deleteForm,
         createOption,
         deleteOption,
@@ -147,6 +160,7 @@ export default function BuilderProvider({ children }: { children: ReactNode }) {
         getProject,
         playProject,
         saveProject,
+        cleanProject,
       }}
     >
       {children}

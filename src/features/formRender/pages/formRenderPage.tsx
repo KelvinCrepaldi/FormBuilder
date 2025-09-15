@@ -20,7 +20,7 @@ export default function FormRenderPage() {
   }, [projectId]);
 
   return (
-    <section className="flex flex-col gap-10 py-10 justify-center items-center bg-black/5">
+    <section className="flex flex-col gap-10 py-10  items-center bg-black/5 min-h-screen">
       <div className="flex items-center flex-col">
         <div className="typhography-h1">{project?.title}</div>
         <div className="typhography-h2 text-primary/60">{project?.description}</div>

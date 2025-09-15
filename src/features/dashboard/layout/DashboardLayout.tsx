@@ -8,7 +8,7 @@ export default function DashboardLayout() {
     <SidebarProvider>
       <DashboardSidebar />
 
-      <main className="flex flex-1 p-1 bg-sidebar">
+      <main className="flex flex-1 bg-sidebar">
         <div className="flex flex-1 w-full border-l">
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="w-full flex-1 bg-white">

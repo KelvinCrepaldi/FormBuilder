@@ -10,20 +10,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { FormInput } from "lucide-react";
+import { ClipboardPlus, LayoutDashboard, NotebookPen } from "lucide-react";
 import { useNavigate } from "react-router";
 
+import logo from "@/assets/logo.svg";
+
 const items = [
-    { title: "Home", url: "/dashboard", icon: <FormInput /> },
-    { title: "Projetos", url: "/dashboard/projects", icon: <FormInput /> },
-    { title: "Criar novo", url: "/builder", icon: <FormInput /> },
+  { title: "Dashboard", url: "/dashboard", icon: <LayoutDashboard /> },
+  { title: "Projetos", url: "/dashboard/projects", icon: <NotebookPen /> },
+  { title: "Criar novo", url: "/builder", icon: <ClipboardPlus /> },
 ];
 
 export default function DashboardSidebar() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <Sidebar variant="inset">
-      <SidebarHeader>Dashboard</SidebarHeader>
+      <SidebarHeader>
+        <div className="flex items-center gap-1">
+          <img src={logo} className="w-7" /> <span className="text-lg font-bold">orm Builder</span>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -31,7 +37,11 @@ export default function DashboardSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild onClick={() => navigate(item.url)} className="cursor-pointer">
+                  <SidebarMenuButton
+                    asChild
+                    onClick={() => navigate(item.url)}
+                    className="cursor-pointer"
+                  >
                     <div>
                       {item.icon}
                       <span>{item.title}</span>
