@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import logo from "@/assets/logo.svg";
-import { Github, Linkedin } from "lucide-react";
+import { Github } from "lucide-react";
 
 export default function Header() {
   const navigate = useNavigate();

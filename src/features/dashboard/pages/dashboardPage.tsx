@@ -2,19 +2,16 @@ import { ChartPieDonutText } from "@/components/chatPieSample";
 import { ChartBarInteractive } from "@/components/chatSample";
 import { SiteHeader } from "@/components/siteHeader";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import type { DatabaseProjectTypes } from "@/database/dexie";
 import useDB from "@/hooks/useDB";
-import { ArrowDown, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import ProjectList from "../components/projectList";
 
 export default function DashboardPage() {
-  const navigate = useNavigate();
   const { projects, clearProjects } = useDB();
-  const [projectList, setProjectList] = useState<null | DatabaseProjectTypes[]>(
+  const [, setProjectList] = useState<null | DatabaseProjectTypes[]>(
     null
   );
   useEffect(() => {
