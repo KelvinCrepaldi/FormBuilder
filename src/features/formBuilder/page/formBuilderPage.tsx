@@ -7,10 +7,10 @@ import ConfigTab from "../components/configTab";
 import LayoutTab from "../components/layoutTab";
 import { SiteHeader } from "@/components/siteHeader";
 import { Button } from "@/components/ui/button";
-import useBuilder from "../context/useBuilder";
+import useBuilder from "../hooks/useBuilder";
 
 export default function FormBuilderPage() {
-  const { getProject, saveProject } = useBuilder();
+  const { saveProject } = useBuilder();
 
   return (
     <main className="flex flex-1 h-full flex-col gap-2 ">
@@ -31,12 +31,6 @@ export default function FormBuilderPage() {
             </TabsTrigger>
           </TabsList>
           <div className="flex gap-2">
-            <Button
-              className="bg-green-800 rounded"
-              onClick={() => console.log(getProject())}
-            >
-              Play test
-            </Button>
             <Button className="bg-green-800 rounded" onClick={saveProject}>
               Save Project
             </Button>

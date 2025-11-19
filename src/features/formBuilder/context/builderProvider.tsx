@@ -1,18 +1,24 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import {
   configurationReducer,
   type ConfiguraitonReducerState,
   type ConfigurationAction,
-} from "./projectReducer";
+} from "./configurationReducer";
+import { questionsReducer, type QuestionsAction } from "./questionsReducer";
+import type { questionTypes } from "../types";
 
 export type BuilderContextTypes = {
   configurationState: ConfiguraitonReducerState;
   configurationDispatch: React.Dispatch<ConfigurationAction>;
+  questionsState: questionTypes[];
+  questionsDispatch: React.Dispatch<QuestionsAction>;
+  active: string | null;
+  handleSetActive: (id: string) => void;
 };
 
 export const BuilderContext = createContext<BuilderContextTypes>(null);
 
-export default function BuilderProviderNew({
+export default function BuilderProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -26,9 +32,22 @@ export default function BuilderProviderNew({
     }
   );
 
+  const [questionsState, questionsDispatch] = useReducer(questionsReducer, []);
+  const [active, setActive] = useState<null | string>(null);
+
+  const handleSetActive = (id: string) => {
+    setActive(id);
+  };
   return (
     <BuilderContext.Provider
-      value={{ configurationState, configurationDispatch }}
+      value={{
+        configurationState,
+        configurationDispatch,
+        questionsState,
+        questionsDispatch,
+        active,
+        handleSetActive,
+      }}
     >
       {children}
     </BuilderContext.Provider>

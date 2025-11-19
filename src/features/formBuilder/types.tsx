@@ -6,9 +6,9 @@ export type projectTypes = {
 
 export type formLayoutTypes = "radio" | "checkbox";
 
-export type formTypes = {
+export type questionTypes = {
   id: string;
-  question: string;
+  text: string;
   position: number;
   type: formLayoutTypes;
   options?: optionTypes[];

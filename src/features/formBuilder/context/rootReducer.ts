@@ -1,13 +1,13 @@
-import { formsReducer, type FormsAction } from "./formsReducer";
+import { questionsReducer, type QuestionsAction } from "./questionsReducer";
 import { layoutReducer, type LayoutAction } from "./layoutReducer";
-import { projectReducer, type ProjectAction } from "./projectReducer";
+import { configurationReducer, type ConfigurationAction } from "./configurationReducer";
 
-type RootAction = ProjectAction | FormsAction | LayoutAction;
+type RootAction = ConfigurationAction | QuestionsAction | LayoutAction;
 
 export function rootReducer(state, action: RootAction) {
   return {
-    project: projectReducer(state.project, action as ProjectAction),
-    forms: formsReducer(state.forms, action as FormsAction),
+    project: configurationReducer(state.project, action as ConfigurationAction),
+    forms: questionsReducer(state.forms, action as QuestionsAction),
     layout: layoutReducer(state.layout, action as LayoutAction),
   };
 }

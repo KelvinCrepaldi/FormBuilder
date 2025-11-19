@@ -1,14 +1,21 @@
 import { Button } from "@/components/ui/button";
-import useBuilder from "../context/useBuilder";
+import useQuestions from "../hooks/useQuestions";
 
 export default function BuildTools() {
-  const { createForm } = useBuilder();
+  const { createQuestion } = useQuestions();
   return (
     <div className="w-full  flex flex-col gap-1 py-2 px-8 border-t">
       <div className="font-bold">Adicionar novo:</div>
       <div className="  flex gap-4">
-        <Button onClick={() => createForm("checkbox")} className="w-[130px]" >+ Checkbox</Button>
-        <Button onClick={() => createForm("radio")} className="w-[130px]">+ radio</Button>
+        <Button
+          onClick={() => createQuestion("checkbox")}
+          className="w-[130px]"
+        >
+          + Checkbox
+        </Button>
+        <Button onClick={() => createQuestion("radio")} className="w-[130px]">
+          + radio
+        </Button>
       </div>
     </div>
   );

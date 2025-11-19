@@ -5,14 +5,14 @@ export type DatabaseProjectTypes = {
   ref: string;
   title: string;
   description: string;
-  forms: DatabaseFormTypes[];
+  questions: DatabaseQuestionsTypes[];
 };
 
 export type formLayoutTypes = "radio" | "checkbox";
 
-export type DatabaseFormTypes = {
+export type DatabaseQuestionsTypes = {
   id: string;
-  question: string;
+  text: string;
   position: number;
   type: formLayoutTypes;
   options?: DatabaseOptionTypes[];
