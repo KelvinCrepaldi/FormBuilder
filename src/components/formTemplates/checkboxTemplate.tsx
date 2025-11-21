@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
-import type { formTypes } from "@/features/formBuilder/types";
+import type { questionTypes } from "@/features/formBuilder/types";
 
 const schema = z.object({
   values: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -23,7 +23,7 @@ const schema = z.object({
 export default function CheckboxTemplate({
   formData,
 }: {
-  formData: formTypes;
+  formData: questionTypes;
 }): React.JSX.Element {
   type FormType = z.infer<typeof schema>;
 
@@ -48,7 +48,7 @@ export default function CheckboxTemplate({
       transition={{ duration: 0.3, type: "tween", ease: "anticipate" }}
       className="flex w-full flex-col items-center p-5 md:p-10 gap-5 md:gap-10 border rounded-xl bg-white max-w-xl"
     >
-      <div className="text-2xl font-bold mb-10">{formData.question}</div>
+      <div className="text-2xl font-bold mb-10">{formData.text}</div>
       <FormProvider {...form}>
         <Form {...form}>
           <form
@@ -56,8 +56,6 @@ export default function CheckboxTemplate({
             onSubmit={form.handleSubmit(onHandleSubmit)}
             className="flex flex-col h-full items-center w-full gap-3"
           >
-            
-
             <>
               {formData?.options?.map((option, index) => {
                 return (
@@ -73,7 +71,9 @@ export default function CheckboxTemplate({
                       name="values"
                       render={({ field }) => (
                         <FormItem className="border  flex justify-between items-center px-2 rounded w-full">
-                          <FormLabel className="w-full p-3">{option.label}</FormLabel>
+                          <FormLabel className="w-full p-3">
+                            {option.label}
+                          </FormLabel>
                           <FormControl>
                             <Checkbox
                               checked={field.value?.includes(option.id)}
@@ -97,7 +97,9 @@ export default function CheckboxTemplate({
                 return null;
               })}
             </>
-            <Button type="submit" className="mt-20">continuar</Button>
+            <Button type="submit" className="mt-20">
+              continuar
+            </Button>
           </form>
         </Form>
       </FormProvider>

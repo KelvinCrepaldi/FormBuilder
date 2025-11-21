@@ -52,6 +52,7 @@ export default function useQuestions() {
   return {
     questions,
     active,
+    handleSetActive,
     createQuestion,
     deleteQuestion,
     updateQuestionText,

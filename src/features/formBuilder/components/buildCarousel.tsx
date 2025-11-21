@@ -4,8 +4,8 @@ import { GripVertical, Trash2 } from "lucide-react";
 import useQuestions from "../hooks/useQuestions";
 
 export default function BuildCarousel() {
-  const { questions, deleteQuestion } = useQuestions();
-  const {} =
+  const { questions, deleteQuestion, handleSetActive } = useQuestions();
+
 
   return (
     <div className="px-8 py-2 w-full flex gap-2 ">
