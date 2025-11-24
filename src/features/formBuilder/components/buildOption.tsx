@@ -19,14 +19,12 @@ export default function BuildOption({
 
   return (
     <div className="flex items-center justify-between gap-2">
-      {/* Label editável */}
       <Input
         value={option.label}
         onChange={(e) => updateOptionText(formId, option.id, e.target.value)}
         placeholder={`Digite a ${position}ª opção...`}
       />
 
-      {/* Botão remover */}
       <Button
         variant={"outline"}
         className="text-red-600"

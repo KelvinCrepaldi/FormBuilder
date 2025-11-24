@@ -1,13 +1,17 @@
 import { questionsReducer, type QuestionsAction } from "./questionsReducer";
-import { layoutReducer, type LayoutAction } from "./layoutReducer";
-import { configurationReducer, type ConfigurationAction } from "./configurationReducer";
+import { projectReducer, type projectAction, type ProjectReducerState } from "./projectReducer";
+import type { DatabaseQuestionsTypes } from "@/database/dexie";
 
-type RootAction = ConfigurationAction | QuestionsAction | LayoutAction;
+export type RootAction = projectAction | QuestionsAction;
 
-export function rootReducer(state, action: RootAction) {
+export type RootStateTypes = {
+  project: ProjectReducerState,
+  questions: DatabaseQuestionsTypes[]
+}
+
+export function rootReducer(state: RootStateTypes, action: RootAction) {
   return {
-    project: configurationReducer(state.project, action as ConfigurationAction),
-    forms: questionsReducer(state.forms, action as QuestionsAction),
-    layout: layoutReducer(state.layout, action as LayoutAction),
+    project: projectReducer(state.project, action as projectAction),
+    questions: questionsReducer(state.questions, action as QuestionsAction),
   };
 }

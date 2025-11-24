@@ -3,37 +3,32 @@ import { BuilderContext } from "../context/builderProvider";
 import type { formLayoutTypes } from "../types";
 
 export default function useQuestions() {
-  const {
-    questionsDispatch,
-    questionsState: questions,
-    handleSetActive,
-    active,
-  } = useContext(BuilderContext);
+  const { rootState, rootDispatch, setActive, active } = useContext(BuilderContext);
 
   const createQuestion = (type: formLayoutTypes) => {
     const questionId = crypto.randomUUID();
-    questionsDispatch({
+    rootDispatch({
       type: "create_question",
       formType: type,
       id: questionId,
     });
-    handleSetActive(questionId);
+    setActive(questionId);
   };
 
   const deleteQuestion = (questionId: string) => {
-    questionsDispatch({ type: "delete_question", questionId });
+    rootDispatch({ type: "delete_question", questionId });
   };
 
   const createOption = (questionId: string) => {
-    questionsDispatch({ type: "create_option", questionId });
+    rootDispatch({ type: "create_option", questionId });
   };
 
   const deleteOption = (questionId: string, optionId: string) => {
-    questionsDispatch({ type: "delete_option", questionId, optionId });
+    rootDispatch({ type: "delete_option", questionId, optionId });
   };
 
   const updateQuestionText = (questionId: string, text: string) => {
-    questionsDispatch({ type: "update_text", questionId, text });
+    rootDispatch({ type: "update_text", questionId, text });
   };
 
   const updateOptionText = (
@@ -41,7 +36,7 @@ export default function useQuestions() {
     optionId: string,
     label: string
   ) => {
-    questionsDispatch({
+    rootDispatch({
       type: "update_option_label",
       questionId,
       optionId,
@@ -50,9 +45,9 @@ export default function useQuestions() {
   };
 
   return {
-    questions,
+    questions: rootState.questions,
     active,
-    handleSetActive,
+    setActive,
     createQuestion,
     deleteQuestion,
     updateQuestionText,

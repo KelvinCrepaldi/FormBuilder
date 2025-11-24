@@ -4,9 +4,9 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import BuildQuestion from "./buildQuestion";
-import CheckboxTemplate from "@/components/formTemplates/checkboxTemplate";
 import { ArrowDown } from "lucide-react";
 import useQuestions from "../hooks/useQuestions";
+import PreviewResizablePanel from "./previewResizablePanel";
 
 export default function QuestionsTab() {
   const { active, questions } = useQuestions();
@@ -29,18 +29,10 @@ export default function QuestionsTab() {
             .map((form) => <BuildQuestion form={form} />)
         )}
       </ResizablePanel>
+      
       <ResizableHandle withHandle />
 
-      <ResizablePanel className="inset-shadow-sm p-5 flex items-center justify-center bg-sidebar relative">
-        <div className="absolute top-0 left-0 p-4 text-primary/40">
-          Pré-visualização:
-        </div>
-        {questions
-          .filter((form) => form.id === active)
-          .map((form) => (
-            <CheckboxTemplate formData={form} />
-          ))}
-      </ResizablePanel>
+      <PreviewResizablePanel/>
     </ResizablePanelGroup>
   );
 }

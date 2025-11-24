@@ -2,31 +2,24 @@ import { useContext } from "react";
 import { BuilderContext } from "../context/builderProvider";
 
 export default function useConfiguration() {
-  const { configurationDispatch, configurationState } =
-    useContext(BuilderContext);
-
-  if (!configurationDispatch || !configurationState) {
-    throw new Error(
-      "useConfiguration precisa estar dentro de <BuilderProvider />"
-    );
-  }
+  const { rootState, rootDispatch } = useContext(BuilderContext);
 
   const handleTitleChange = (newTitle: string) => {
-    configurationDispatch({
+    rootDispatch({
       type: "update_title",
       title: newTitle,
     });
   };
 
   const handleDescriptionChange = (newDescription: string) => {
-    configurationDispatch({
+    rootDispatch({
       type: "update_description",
       description: newDescription,
     });
   };
 
   return {
-    configurationState,
+    configuration: rootState.project,
     handleTitleChange,
     handleDescriptionChange,
   };

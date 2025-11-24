@@ -13,7 +13,7 @@ export default function FormRenderPage() {
     if (projectId) {
       const getProject = async () => {
         const data = await getProjectById(projectId);
-        data && setProject(data);
+        if (data) setProject(data);
       };
       getProject();
     }
@@ -23,9 +23,11 @@ export default function FormRenderPage() {
     <section className="flex flex-col gap-10 py-10  items-center bg-black/5 min-h-screen">
       <div className="flex items-center flex-col">
         <div className="typhography-h1">{project?.title}</div>
-        <div className="typhography-h2 text-primary/60">{project?.description}</div>
+        <div className="typhography-h2 text-primary/60">
+          {project?.description}
+        </div>
       </div>
-      {project?.forms.map((form) => (
+      {project?.questions.map((form) => (
         <CheckboxTemplate formData={form} />
       ))}
     </section>

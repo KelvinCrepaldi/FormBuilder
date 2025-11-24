@@ -1,15 +1,15 @@
-export type ConfiguraitonReducerState = {
+export type ProjectReducerState = {
+  ref: string
   title: string
   description: string
-  ref: string
 }
 
-export type ConfigurationAction =
+export type projectAction =
   | { type: "update_title"; title: string }
   | { type: "update_description"; description: string }
   | { type: "reset" };
 
-export function configurationReducer(state: ConfiguraitonReducerState, action:ConfigurationAction) {
+export function projectReducer(state: ProjectReducerState, action:projectAction) {
   switch (action.type) {
     case "update_title":
       return { ...state, title: action.title };

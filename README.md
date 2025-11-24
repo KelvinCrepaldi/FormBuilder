@@ -1,6 +1,6 @@
 # Form Builder
 
-Um protótipo de **criador de formulários dinâmicos** que permite ao usuário criar perguntas personalizadas, gerando formulários totalmente customizados e gerenciáveis através de um **Dashboard**.
+Um projeto pessoal de **criador de formulários dinâmicos** que permite ao usuário criar perguntas personalizadas, gerando formulários customizados e gerenciáveis, os dados são salvos localmente por indexDB.
 
 ## Funcionalidades Principais
 
@@ -22,14 +22,14 @@ Um protótipo de **criador de formulários dinâmicos** que permite ao usuário 
    - Configure perguntas e personalize o formulário conforme necessário.
 
 2. **Compartilhar Link**
-   - Envie o formulário para clientes ou participantes por meio de um link único.
+   - Abra o link único e responda as perguntas do projeto.
 
 3. **Gerenciar Resultados**
    - Acompanhe as respostas recebidas, visualize dados e gere insights através do Dashboard.
 
 ---
 
-O **Form Builder** é um projeto totalmente offline que inicialmente simula o uso de API usando IndexDB.
+O **Form Builder** é um projeto em desenvolvimento que inicialmente simula o uso de API usando IndexDB. O repositório é separado em features como: Dashboard, FormBuilder, FormRender e LandingPage. A UI/UX foi criada usando componentes do Shadcn com um estilo "limpo".
 
 ### Como rodar:
 
