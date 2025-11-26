@@ -1,7 +1,11 @@
 import { Input } from "@/components/ui/input";
 import useConfiguration from "../hooks/useConfiguration";
 import { Label } from "@/components/ui/label";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import PreviewResizablePanel from "./previewResizablePanel";
 
 export default function ConfigTab() {
@@ -10,8 +14,8 @@ export default function ConfigTab() {
 
   return (
     <ResizablePanelGroup direction="horizontal" className="border-t">
-      <ResizablePanel className="p-8">
-        <div className="p-4 flex flex-col gap-4 max-w-md">
+      <ResizablePanel>
+        <div className="p-4 flex flex-col gap-4">
           <div>
             <Label className="block text-sm font-medium mb-1">Título</Label>
             <Input

@@ -11,10 +11,10 @@ export default function BuildQuestion({ form }: { form: questionTypes }) {
   return (
     <div className=" w-full h-full flex flex-col">
       {/* Pergunta editável */}
-      <div className="typhography-h1 flex text-primary/50 mb-2">
-        #{form.position}
+      <div className="text-xl justify-end flex text-primary/50 items-center gap-1 mb-2">
+        <span className="text-base text-primary/30">#</span>
+        {form.position + 1}
       </div>
-
       {/* Lista de opções */}
       <div className="flex flex-col gap-2">
         <Label htmlFor="question" />

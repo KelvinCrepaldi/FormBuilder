@@ -13,7 +13,7 @@ export default function QuestionsTab() {
 
   return (
     <ResizablePanelGroup direction="horizontal" className="border-t">
-      <ResizablePanel className="p-8">
+      <ResizablePanel className="p-4">
         {questions.length === 0 ? (
           <div className="h-full text-primary/70 flex flex-col gap-5 items-center justify-center max-w-2/3 mx-auto font-bold text-center">
             <div>
@@ -29,10 +29,10 @@ export default function QuestionsTab() {
             .map((form) => <BuildQuestion form={form} />)
         )}
       </ResizablePanel>
-      
+
       <ResizableHandle withHandle />
 
-      <PreviewResizablePanel/>
+      <PreviewResizablePanel />
     </ResizablePanelGroup>
   );
 }
