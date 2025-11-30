@@ -22,8 +22,12 @@ const schema = z.object({
 
 export default function CheckboxQuestion({
   formData,
+  nextFn,
+  onAnswer,
 }: {
   formData: questionTypes;
+  nextFn?: () => void;
+  onAnswer?: (id: string, value: any) => void;
 }): React.JSX.Element {
   type FormType = z.infer<typeof schema>;
 
@@ -37,7 +41,9 @@ export default function CheckboxQuestion({
   const { control } = form;
 
   const onHandleSubmit = (data: FormType): void => {
-    console.log(data);
+    onAnswer?.(formData.id, data.values); // ← salvar respostas
+
+    if (nextFn) nextFn();
   };
 
   return (

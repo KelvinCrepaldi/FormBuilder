@@ -26,10 +26,10 @@ export default function FormBuilderPage() {
           <TabsList className="gap-3 inset-shadow-sm">
             <TabsTrigger className="w-[150px]" value="config">
               <TableConfig />
-              Configuration
+              Projeto
             </TabsTrigger>
             <TabsTrigger className="w-[150px]" value="questions">
-              <FileQuestion /> Questions Form
+              <FileQuestion /> Formulários
             </TabsTrigger>
             <TabsTrigger className="w-[150px]" value="layout">
               <Layout /> Layout

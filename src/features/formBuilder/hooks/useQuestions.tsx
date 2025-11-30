@@ -21,6 +21,10 @@ export default function useQuestions() {
     setActive(questionId);
   };
 
+  const duplicateQuestion = (questionId: string) => {
+    rootDispatch({ type: "duplicate_question", questionId });
+  }
+
   const deleteQuestion = (questionId: string) => {
     rootDispatch({ type: "delete_question", questionId });
   };
@@ -55,6 +59,7 @@ export default function useQuestions() {
     active,
     setActive,
     createQuestion,
+    duplicateQuestion,
     deleteQuestion,
     updateQuestionText,
     createOption,

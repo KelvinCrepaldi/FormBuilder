@@ -16,6 +16,7 @@ export default function ProjectList() {
   const navigate = useNavigate();
   const { projects } = useDB();
   const [projectList, setProjectList] = useState<DatabaseProjectTypes[]>([]);
+
   useEffect(() => {
     const getList = async () => {
       const list = await projects();
@@ -23,7 +24,6 @@ export default function ProjectList() {
     };
     getList();
   }, [projects]);
-
 
   return (
     <div className="w-full h-full flex flex-col gap-4">

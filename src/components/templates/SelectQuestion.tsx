@@ -3,12 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 
 import {
   Select,
@@ -28,8 +23,12 @@ const schema = z.object({
 
 export default function SelectQuestion({
   formData,
+  nextFn,
+  onAnswer,
 }: {
   formData: questionTypes;
+  nextFn?: () => void;
+  onAnswer?: (id: string, value: any) => void;
 }): React.JSX.Element {
   type FormType = z.infer<typeof schema>;
 
@@ -41,7 +40,9 @@ export default function SelectQuestion({
   });
 
   const onHandleSubmit = (data: FormType): void => {
-    console.log(data);
+    onAnswer?.(formData.id, data.value); // ← salvar respostas
+
+    if (nextFn) nextFn();
   };
 
   return (
@@ -66,10 +67,7 @@ export default function SelectQuestion({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
+                    <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Selecione..." />
                       </SelectTrigger>

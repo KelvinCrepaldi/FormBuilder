@@ -2,8 +2,21 @@ import { Button } from "@/components/ui/button";
 import useQuestions from "../hooks/useQuestions";
 import useBuilder from "../hooks/useBuilder";
 import { useNavigate } from "react-router";
+import {
+  CheckSquare,
+  Dot,
+  Type,
+  List,
+  Save,
+  XCircle,
+} from "lucide-react";
 
-const questionOptions = ["checkbox", "radio", "text", "select"] as const;
+const questionOptions = [
+  { type: "checkbox", icon: CheckSquare },
+  { type: "radio", icon: Dot },
+  { type: "text", icon: Type },
+  { type: "select", icon: List },
+] as const;
 
 export default function BuildTools() {
   const { saveProject } = useBuilder();
@@ -20,14 +33,15 @@ export default function BuildTools() {
       <div className="flex gap-2 items-center">
         <div className="font-bold">Adicionar: </div>
 
-        {questionOptions.map((type) => (
+        {questionOptions.map(({ type, icon: Icon }) => (
           <Button
             key={type}
             variant="outline"
             onClick={() => createQuestion(type)}
-            className="w-[130px] capitalize"
+            className="w-[40px] h-[40px] p-0 flex items-center justify-center"
+            title={type}
           >
-            {type}
+            <Icon size={20} />
           </Button>
         ))}
       </div>
@@ -38,11 +52,13 @@ export default function BuildTools() {
           variant="outline"
           onClick={handleSave}
           size="sm"
+          title="Salvar"
         >
-          Salvar
+          <Save size={18} />
         </Button>
-        <Button variant="ghost" onClick={handleSave} size="sm">
-          Cancelar
+
+        <Button variant="ghost" onClick={handleSave} size="sm" title="Cancelar">
+          <XCircle size={18} />
         </Button>
       </div>
     </div>

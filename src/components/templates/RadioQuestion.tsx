@@ -11,10 +11,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Button } from "../ui/button";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import type { questionTypes } from "@/features/formBuilder/types";
 
@@ -24,8 +21,12 @@ const schema = z.object({
 
 export default function RadioQuestion({
   formData,
+  nextFn,
+  onAnswer,
 }: {
   formData: questionTypes;
+  nextFn?: () => void;
+  onAnswer?: (id: string, value: any) => void;
 }): React.JSX.Element {
   type FormType = z.infer<typeof schema>;
 
@@ -37,7 +38,9 @@ export default function RadioQuestion({
   });
 
   const onHandleSubmit = (data: FormType): void => {
-    console.log(data);
+    onAnswer?.(formData.id, data.value); // ← salvar respostas
+
+    if (nextFn) nextFn();
   };
 
   return (

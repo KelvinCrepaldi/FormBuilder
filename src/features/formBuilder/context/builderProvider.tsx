@@ -18,14 +18,23 @@ export type BuilderContextTypes = {
   setActive: Dispatch<SetStateAction<string | null>>;
 };
 
-export const BuilderContext = createContext<BuilderContextTypes | undefined>(undefined);
-
+export const BuilderContext = createContext<BuilderContextTypes | undefined>(
+  undefined
+);
 
 const initialReducer = {
   project: {
     ref: crypto.randomUUID(),
     title: "New project",
     description: "Description...",
+    layout: {
+      font: "Inter",
+      fontSize: 16,
+      primaryColor: "#000000",
+      backgroundColor: "#ffffff",
+      showProgressBar: true,
+      layoutMode: "single_page" as const,
+    },
   },
   questions: [],
 };

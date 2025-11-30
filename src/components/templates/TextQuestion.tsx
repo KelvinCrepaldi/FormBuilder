@@ -22,8 +22,12 @@ const schema = z.object({
 
 export default function TextQuestion({
   formData,
+  nextFn,
+  onAnswer,
 }: {
   formData: questionTypes;
+  nextFn?: () => void;
+  onAnswer?: (id: string, value: any) => void;
 }): React.JSX.Element {
   type FormType = z.infer<typeof schema>;
 
@@ -35,9 +39,10 @@ export default function TextQuestion({
   });
 
   const onHandleSubmit = (data: FormType): void => {
-    console.log(data);
-  };
+    onAnswer?.(formData.id, data.value); // ← salvar respostas
 
+    if (nextFn) nextFn();
+  };
   return (
     <motion.div
       initial={{ x: 30, opacity: 0 }}

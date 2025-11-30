@@ -4,9 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useQuestions from "../hooks/useQuestions";
 import type { questionTypes } from "../types";
+import { Layers2, Trash2 } from "lucide-react";
 
 export default function BuildQuestion({ form }: { form: questionTypes }) {
-  const { updateQuestionText, createOption } = useQuestions();
+  const { updateQuestionText, createOption, deleteQuestion, duplicateQuestion } = useQuestions();
 
   return (
     <div className=" w-full h-full flex flex-col">
@@ -14,6 +15,20 @@ export default function BuildQuestion({ form }: { form: questionTypes }) {
       <div className="text-xl justify-end flex text-primary/50 items-center gap-1 mb-2">
         <span className="text-base text-primary/30">#</span>
         {form.position + 1}
+        <Button
+                variant="outline"
+                size="sm"
+                onClick={() => duplicateQuestion(form.id)}
+              >
+                <Layers2 />
+              </Button>
+        <Button
+                variant="outline"
+                size="sm"
+                onClick={() => deleteQuestion(form.id)}
+              >
+                <Trash2 />
+              </Button>
       </div>
       {/* Lista de opções */}
       <div className="flex flex-col gap-2">

@@ -1,3 +1,4 @@
+import type { ProjectLayout } from "@/features/formBuilder/context/projectReducer";
 import Dexie, { type Table } from "dexie";
 
 export type DatabaseProjectTypes = {
@@ -5,8 +6,24 @@ export type DatabaseProjectTypes = {
   ref: string;
   title: string;
   description: string;
+  layout: ProjectLayout; // <-- IGUAL ao reducer
   questions: DatabaseQuestionsTypes[];
 };
+
+export type FormConfig = {
+  theme: {
+    colorPrimary: string;
+    colorBackground: string;
+    font: string;
+    textSize: string;
+  };
+  layout: {
+    singlePage: boolean;
+    showProgressBar: boolean;
+    pages?: number;
+  };
+};
+
 
 export type formLayoutTypes = "radio" | "checkbox" | "text" | "select";
 
@@ -29,7 +46,7 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super("resultsDatabase");
-    this.version(1).stores({
+    this.version(3).stores({
       DBproject: "++id, ref",
     });
   }

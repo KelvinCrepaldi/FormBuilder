@@ -14,8 +14,9 @@ import useProjects from "../hooks/usePagination";
 import ListTools from "../components/listTools";
 import { useState } from "react";
 import type { DatabaseProjectTypes } from "@/database/dexie";
-import { Calendar, Edit, Link, Trash } from "lucide-react";
+import { Link, Trash } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import CopyButton from "../components/copyButton";
 
 export default function DashboardProjectPage() {
   const {
@@ -117,12 +118,7 @@ const ListStyle = ({
                       <Link />
                     </LinkElement>
                   </Button>
-                  <Button size="sm" variant="outline">
-                    <Calendar />
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Edit />
-                  </Button>
+                  <CopyButton text={JSON.stringify(project, null, 2)} />
                   <Button
                     size="sm"
                     variant="destructive"
@@ -175,12 +171,7 @@ const CardStyle = ({
                 <Link />
               </LinkElement>
             </Button>
-            <Button size="sm" variant="outline">
-              <Calendar />
-            </Button>
-            <Button size="sm" variant="outline">
-              <Edit />
-            </Button>
+            <CopyButton text={JSON.stringify(project, null, 2)} />
             <Button
               size="sm"
               variant="destructive"
