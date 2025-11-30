@@ -4,7 +4,7 @@ export type projectTypes = {
   description: string;
 };
 
-export type formLayoutTypes = "radio" | "checkbox";
+export type formLayoutTypes = "radio" | "checkbox" | "text" | "select";
 
 export type questionTypes = {
   id: string;

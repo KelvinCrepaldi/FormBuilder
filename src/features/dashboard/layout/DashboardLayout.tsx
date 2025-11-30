@@ -10,8 +10,8 @@ export default function DashboardLayout() {
 
       <main className="flex flex-1 bg-sidebar">
         <div className="flex flex-1 w-full border-l">
-          <div className="flex flex-1 flex-col items-center justify-center">
-            <div className="w-full flex-1 bg-white">
+          <div className="flex flex-1 flex-col">
+            <div className="w-full max-w-full flex-1 bg-white overflow-hidden" >
               <Outlet />
             </div>
           </div>

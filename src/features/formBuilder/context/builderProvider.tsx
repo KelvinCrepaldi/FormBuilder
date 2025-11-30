@@ -18,7 +18,8 @@ export type BuilderContextTypes = {
   setActive: Dispatch<SetStateAction<string | null>>;
 };
 
-export const BuilderContext = createContext<BuilderContextTypes>(null);
+export const BuilderContext = createContext<BuilderContextTypes | undefined>(undefined);
+
 
 const initialReducer = {
   project: {

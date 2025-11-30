@@ -13,12 +13,12 @@ export type QuestionsAction =
 export function questionsReducer(state: DatabaseQuestionsTypes[], action: QuestionsAction): questionTypes[] {
   switch (action.type) {
     case "create_question": {
-      const newForm: questionTypes = {
+      const newForm: DatabaseQuestionsTypes = {
         id: action.id,
         text: "New question",
         options: [{ id: crypto.randomUUID(), label: "", value: "" }],
         position: state.length,
-        type: action.formType,
+        type: action.formType as  formLayoutTypes,
       };
       return [...state, newForm];
     }

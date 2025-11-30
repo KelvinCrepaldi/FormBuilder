@@ -2,13 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { GripVertical, Trash2 } from "lucide-react";
 import useQuestions from "../hooks/useQuestions";
-
+import useHorizontalDrag from "../hooks/useHorizontalDrag";
 export default function BuildCarousel() {
   const { questions, deleteQuestion, setActive, active } = useQuestions();
+   const dragRef = useHorizontalDrag();
 
   return (
-    <>
-      <div className="px-4 py-2 w-full flex gap-2 ">
+    <div className="w-full flex flex-col flex-1" style={{ maxWidth: 'calc(100vw - var(--sidebar-width) - 1px) ' }} >
+      <div ref={dragRef} className="px-4 py-2 flex gap-2 overflow-x-auto">
         {questions.map((item, index) => (
           <Card
             className={`relative bg-gray-50 cursor-pointer flex flex-row gap-2 p-2 items-center w-[250px] h-[100px] ${
@@ -37,6 +38,6 @@ export default function BuildCarousel() {
         ))}
       </div>
       <div className="w-full h-3 border-t"></div>
-    </>
+    </div>
   );
 }

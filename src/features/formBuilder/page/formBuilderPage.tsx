@@ -6,8 +6,17 @@ import { FileQuestion, Layout, TableConfig } from "lucide-react";
 import ConfigTab from "../components/configTab";
 import LayoutTab from "../components/layoutTab";
 import { SiteHeader } from "@/components/siteHeader";
+import useBuilder from "../hooks/useBuilder";
+import { useEffect } from "react";
 
 export default function FormBuilderPage() {
+
+  const { resetBuilder } = useBuilder()
+  
+  useEffect(() => {
+    resetBuilder()
+  }, [])
+  
   return (
     <main className="flex flex-1 h-full flex-col">
       <SiteHeader title="Criar novo" />

@@ -8,7 +8,7 @@ export type DatabaseProjectTypes = {
   questions: DatabaseQuestionsTypes[];
 };
 
-export type formLayoutTypes = "radio" | "checkbox";
+export type formLayoutTypes = "radio" | "checkbox" | "text" | "select";
 
 export type DatabaseQuestionsTypes = {
   id: string;

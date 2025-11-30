@@ -1,8 +1,17 @@
 import { db } from "@/database/dexie";
 import useConfiguration from "./useConfiguration";
 import useQuestions from "./useQuestions";
+import { BuilderContext } from "../context/builderProvider";
+import { useContext } from "react";
 
 export default function useBuilder() {
+  const ctx = useContext(BuilderContext);
+
+  if (!ctx) {
+    throw new Error("useBuilder deve ser usado dentro de <BuilderProvider>");
+  }
+
+  const { rootDispatch } = ctx;
   const { configuration } = useConfiguration();
   const { questions } = useQuestions();
 
@@ -11,7 +20,13 @@ export default function useBuilder() {
       ...configuration,
       questions,
     });
+
+    rootDispatch({ type: "reset_all" });
   };
 
-  return { saveProject };
+  const resetBuilder = () => {
+    rootDispatch({ type: "reset_all" });
+  };
+
+  return { saveProject, resetBuilder };
 }

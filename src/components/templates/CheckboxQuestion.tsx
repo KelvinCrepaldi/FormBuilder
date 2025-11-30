@@ -20,7 +20,7 @@ const schema = z.object({
   }),
 });
 
-export default function CheckboxTemplate({
+export default function CheckboxQuestion({
   formData,
 }: {
   formData: questionTypes;

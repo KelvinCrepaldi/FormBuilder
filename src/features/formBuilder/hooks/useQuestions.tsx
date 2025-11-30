@@ -3,7 +3,13 @@ import { BuilderContext } from "../context/builderProvider";
 import type { formLayoutTypes } from "../types";
 
 export default function useQuestions() {
-  const { rootState, rootDispatch, setActive, active } = useContext(BuilderContext);
+  const ctx = useContext(BuilderContext);
+
+    if (!ctx) {
+    throw new Error("useQuestions deve ser usado dentro de <BuilderProvider>");
+  }
+
+  const { rootState, rootDispatch, active, setActive } = ctx;
 
   const createQuestion = (type: formLayoutTypes) => {
     const questionId = crypto.randomUUID();
