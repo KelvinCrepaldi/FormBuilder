@@ -2,21 +2,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuestionsTab from "../components/questionsTab";
 import BuildCarousel from "../components/buildCarousel";
 import BuildTools from "../components/buildTools";
-import { FileQuestion, Layout, TableConfig } from "lucide-react";
+import { FileQuestion, Save, TableConfig } from "lucide-react";
 import ConfigTab from "../components/configTab";
-import LayoutTab from "../components/layoutTab";
 import { SiteHeader } from "@/components/siteHeader";
 import useBuilder from "../hooks/useBuilder";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
 
 export default function FormBuilderPage() {
+  const navigate = useNavigate();
+  const { resetBuilder, saveProject } = useBuilder();
 
-  const { resetBuilder } = useBuilder()
-  
   useEffect(() => {
-    resetBuilder()
-  }, [])
-  
+    resetBuilder();
+  }, []);
+
+  const handleSave = () => {
+    saveProject();
+    navigate("/dashboard/projects");
+  };
+
   return (
     <main className="flex flex-1 h-full flex-col">
       <SiteHeader title="Criar novo" />
@@ -24,17 +30,25 @@ export default function FormBuilderPage() {
       <Tabs defaultValue="questions" className="h-full">
         <div className="flex justify-between px-3 pt-2">
           <TabsList className="gap-3 inset-shadow-sm">
+            <TabsTrigger className="w-[150px]" value="questions">
+              <FileQuestion /> Perguntas
+            </TabsTrigger>
             <TabsTrigger className="w-[150px]" value="config">
               <TableConfig />
-              Projeto
-            </TabsTrigger>
-            <TabsTrigger className="w-[150px]" value="questions">
-              <FileQuestion /> Formulários
-            </TabsTrigger>
-            <TabsTrigger className="w-[150px]" value="layout">
-              <Layout /> Layout
+              Configurações
             </TabsTrigger>
           </TabsList>
+          <div className="flex gap-2 items-center">
+            <Button
+              className="bg-green-400 text-white hover:bg-green-300 hover:text-white"
+              variant="outline"
+              onClick={handleSave}
+              size="sm"
+              title="Salvar"
+            >
+              <Save size={18} /> Salvar
+            </Button>
+          </div>
         </div>
 
         <TabsContent value="config">
@@ -42,9 +56,6 @@ export default function FormBuilderPage() {
         </TabsContent>
         <TabsContent value="questions">
           <QuestionsTab />
-        </TabsContent>
-        <TabsContent value="layout">
-          <LayoutTab />
         </TabsContent>
       </Tabs>
       <BuildTools />

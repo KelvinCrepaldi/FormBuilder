@@ -16,8 +16,15 @@ import {
 } from "@/components/ui/select";
 
 import { Switch } from "@/components/ui/switch";
-
 import useConfiguration from "../hooks/useConfiguration";
+
+type FontSizeOption = "16" | "20" | "26";
+
+const FONT_SIZE_LABELS: Record<FontSizeOption, string> = {
+  "16": "Pequeno",
+  "20": "Médio",
+  "26": "Grande",
+};
 
 export default function ConfigTab() {
   const {
@@ -38,7 +45,6 @@ export default function ConfigTab() {
     <ResizablePanelGroup direction="horizontal" className="border-t">
       <ResizablePanel>
         <div className="p-4 flex flex-col gap-6">
-
           {/* TÍTULO */}
           <div>
             <Label className="block text-sm font-medium mb-1">Título</Label>
@@ -69,48 +75,68 @@ export default function ConfigTab() {
                 <SelectItem value="Inter">Inter</SelectItem>
                 <SelectItem value="Roboto">Roboto</SelectItem>
                 <SelectItem value="Arial">Arial</SelectItem>
-                <SelectItem value="Montserrat">Montserrat</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* TAMANHO DA FONTE */}
           <div>
-            <Label className="block text-sm font-medium mb-1">Tamanho da fonte</Label>
-            <Input
-              type="number"
-              value={layout.fontSize}
-              min={10}
-              max={40}
-              onChange={(e) => setFontSize(Number(e.target.value))}
-            />
+            <Label className="block text-sm font-medium mb-1">
+              Tamanho da fonte
+            </Label>
+            <Select
+              value={layout.fontSize.toString() as FontSizeOption}
+              onValueChange={(v) => setFontSize(Number(v))}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue>
+                  {
+                    FONT_SIZE_LABELS[
+                      layout.fontSize.toString() as FontSizeOption
+                    ]
+                  }
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="16">Pequeno</SelectItem>
+                <SelectItem value="20">Médio</SelectItem>
+                <SelectItem value="26">Grande</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
-          {/* COR PRIMÁRIA */}
-          <div>
-            <Label className="block text-sm font-medium mb-1">Cor primária</Label>
-            <Input
-              type="color"
-              className="h-10 w-20 p-1 cursor-pointer"
-              value={layout.primaryColor}
-              onChange={(e) => setPrimaryColor(e.target.value)}
-            />
-          </div>
+          {/* CORES */}
+          <div className="flex gap-10">
+            <div>
+              <Label className="block text-sm font-medium mb-1">
+                Cor primária
+              </Label>
+              <Input
+                type="color"
+                className="h-10 w-20 p-1 cursor-pointer"
+                value={layout.primaryColor}
+                onChange={(e) => setPrimaryColor(e.target.value)}
+              />
+            </div>
 
-          {/* COR DE FUNDO */}
-          <div>
-            <Label className="block text-sm font-medium mb-1">Cor de fundo</Label>
-            <Input
-              type="color"
-              className="h-10 w-20 p-1 cursor-pointer"
-              value={layout.backgroundColor}
-              onChange={(e) => setBackgroundColor(e.target.value)}
-            />
+            <div>
+              <Label className="block text-sm font-medium mb-1">
+                Cor de fundo
+              </Label>
+              <Input
+                type="color"
+                className="h-10 w-20 p-1 cursor-pointer"
+                value={layout.backgroundColor}
+                onChange={(e) => setBackgroundColor(e.target.value)}
+              />
+            </div>
           </div>
 
           {/* BARRA DE PROGRESSO */}
           <div className="flex items-center justify-between">
-            <Label className="text-sm font-medium">Exibir barra de progresso</Label>
+            <Label className="text-sm font-medium">
+              Exibir barra de progresso
+            </Label>
             <Switch
               checked={layout.showProgressBar}
               onCheckedChange={(v) => setProgressBarVisible(v)}
@@ -119,7 +145,9 @@ export default function ConfigTab() {
 
           {/* MODO DE LAYOUT */}
           <div>
-            <Label className="block text-sm font-medium mb-1">Modo de layout</Label>
+            <Label className="block text-sm font-medium mb-1">
+              Modo de layout
+            </Label>
             <Select
               value={layout.layoutMode}
               onValueChange={(v) =>

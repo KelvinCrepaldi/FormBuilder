@@ -5,14 +5,17 @@ import useQuestions from "../hooks/useQuestions";
 import useHorizontalDrag from "../hooks/useHorizontalDrag";
 export default function BuildCarousel() {
   const { questions, deleteQuestion, setActive, active } = useQuestions();
-   const dragRef = useHorizontalDrag();
+  const dragRef = useHorizontalDrag();
 
   return (
-    <div className="w-full flex flex-col flex-1" style={{ maxWidth: 'calc(100vw - var(--sidebar-width) - 1px) ' }} >
+    <div
+      className="w-full flex flex-col flex-1"
+      style={{ maxWidth: "calc(100vw - var(--sidebar-width) - 1px) " }}
+    >
       <div ref={dragRef} className="px-4 py-2 flex gap-2 overflow-x-auto">
         {questions.map((item, index) => (
           <Card
-            className={`relative bg-gray-50 cursor-pointer flex flex-row gap-2 p-2 items-center w-[250px] h-[100px] ${
+            className={`relative bg-gray-50 cursor-pointer flex flex-row gap-2 p-2 items-center max-w-[250px] w-full min-w-[250px] h-[100px] ${
               item.id === active && "bg-white shadow"
             }`}
             key={item.id}
