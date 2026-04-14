@@ -33,6 +33,7 @@ const floatingNav = [
   { title: "Workspace", to: "/dashboard", icon: "folder_open" },
   { title: "Projetos", to: "/dashboard/projects", icon: "edit_note" },
   { title: "Criar novo", to: "/builder?tab=questions", icon: "rocket_launch" },
+  { title: "Builder2", to: "/builder2", icon: "deployed_code" },
 ] as const;
 
 const fieldTypes: { type: formLayoutTypes; label: string; icon: typeof Type }[] =

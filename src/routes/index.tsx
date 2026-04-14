@@ -2,6 +2,7 @@ import DashboardLayout from "@/features/dashboard/layout/DashboardLayout";
 import DashboardPage from "@/features/dashboard/pages/dashboardPage";
 import DashboardProjectsPage from "@/features/dashboard/pages/dashboardProjectsPage";
 import FormBuilderPage from "@/features/formBuilder/page/formBuilderPage";
+import Builder2Page from "@/features/formBuilder/page/builder2Page";
 import FormDemoPage from "@/features/formRender/pages/formDemoPage";
 import FormRenderPage from "@/features/formRender/pages/formRenderPage";
 import LandingPage from "@/features/ladingPage/pages/LandingPage";
@@ -20,6 +21,7 @@ export default function GlobalRoutes() {
 
         <Route path="/builder" element={<FormBuilderPage />}>
         </Route>
+        <Route path="/builder2" element={<Builder2Page />} />
       </Route>
     </Routes>
   );

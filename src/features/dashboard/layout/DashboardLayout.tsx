@@ -4,7 +4,7 @@ import { DashboardMobileBar } from "../components/dashboardMobileBar";
 
 export default function DashboardLayout() {
   const { pathname } = useLocation();
-  const isBuilder = pathname === "/builder";
+  const isBuilder = pathname === "/builder" || pathname === "/builder2";
 
   return (
     <div className="bg-surface text-on-surface min-h-svh">
