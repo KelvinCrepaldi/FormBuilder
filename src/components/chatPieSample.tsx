@@ -5,6 +5,7 @@ import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
 
 import {
+  Card,
   CardContent,
   CardDescription,
   CardFooter,
@@ -60,10 +61,12 @@ export function ChartPieDonutText() {
   }, [])
 
   return (
-    <div className="flex flex-col p-8 md:border-l">
+    <Card className="editorial-shadow flex flex-col overflow-hidden rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-low">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle className="font-headline text-sm font-bold tracking-widest text-primary uppercase">
+          Visitantes totais
+        </CardTitle>
+        <CardDescription>Janeiro — Junho 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -123,6 +126,6 @@ export function ChartPieDonutText() {
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>
-    </div>
+    </Card>
   )
 }

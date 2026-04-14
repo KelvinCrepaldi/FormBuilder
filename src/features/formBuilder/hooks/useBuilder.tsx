@@ -1,8 +1,8 @@
-import { db } from "@/database/dexie";
 import useConfiguration from "./useConfiguration";
 import useQuestions from "./useQuestions";
 import { BuilderContext } from "../context/builderProvider";
 import { useContext } from "react";
+import { projectService } from "@/services/projects/projectService";
 
 export default function useBuilder() {
   const ctx = useContext(BuilderContext);
@@ -16,7 +16,7 @@ export default function useBuilder() {
   const { questions } = useQuestions();
 
   const saveProject = async () => {
-    await db.DBproject.add({
+    await projectService.create({
       ...configuration,
       questions,
     });

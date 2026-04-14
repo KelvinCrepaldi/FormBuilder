@@ -1,65 +1,172 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import QuestionsTab from "../components/questionsTab";
-import BuildCarousel from "../components/buildCarousel";
 import BuildTools from "../components/buildTools";
-import { FileQuestion, Save, TableConfig } from "lucide-react";
-import ConfigTab from "../components/configTab";
-import { SiteHeader } from "@/components/siteHeader";
 import useBuilder from "../hooks/useBuilder";
-import { useEffect } from "react";
+import useQuestions from "../hooks/useQuestions";
+import useConfiguration from "../hooks/useConfiguration";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router";
+import {
+  CheckSquare,
+  Dot,
+  List,
+  Menu,
+  Type,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import type { formLayoutTypes } from "../types";
+
+const floatingNav = [
+  { title: "Workspace", to: "/dashboard", icon: "folder_open" },
+  { title: "Projetos", to: "/dashboard/projects", icon: "edit_note" },
+  { title: "Criar novo", to: "/builder?tab=questions", icon: "rocket_launch" },
+] as const;
+
+const fieldTypes: { type: formLayoutTypes; label: string; icon: typeof Type }[] =
+  [
+    { type: "text", label: "Texto", icon: Type },
+    { type: "radio", label: "Única", icon: Dot },
+    { type: "checkbox", label: "Várias", icon: CheckSquare },
+    { type: "select", label: "Lista", icon: List },
+  ];
 
 export default function FormBuilderPage() {
+  const { resetBuilder } = useBuilder();
+  const { createQuestion, active } = useQuestions();
+  const { configuration } = useConfiguration();
   const navigate = useNavigate();
-  const { resetBuilder, saveProject } = useBuilder();
+  const [leftPanelOpen, setLeftPanelOpen] = useState(true);
+  const [rightPanelOpen, setRightPanelOpen] = useState(true);
+  const [leftPanelContent, setLeftPanelContent] = useState<
+    "project" | "fields" | "layout"
+  >("fields");
 
   useEffect(() => {
     resetBuilder();
+    // Montagem: estado limpo ao entrar no builder
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSave = () => {
-    saveProject();
-    navigate("/dashboard/projects");
-  };
+  useEffect(() => {
+    if (active) {
+      setRightPanelOpen(true);
+    }
+  }, [active]);
 
   return (
-    <main className="flex flex-1 h-full flex-col">
-      <SiteHeader title="Criar novo" />
-
-      <Tabs defaultValue="questions" className="h-full">
-        <div className="flex justify-between px-3 pt-2">
-          <TabsList className="gap-3 inset-shadow-sm">
-            <TabsTrigger className="w-[150px]" value="questions">
-              <FileQuestion /> Perguntas
-            </TabsTrigger>
-            <TabsTrigger className="w-[150px]" value="config">
-              <TableConfig />
-              Configurações
-            </TabsTrigger>
-          </TabsList>
-          <div className="flex gap-2 items-center">
-            <Button
-              className="bg-green-400 text-white hover:bg-green-300 hover:text-white"
-              variant="outline"
-              onClick={handleSave}
-              size="sm"
-              title="Salvar"
-            >
-              <Save size={18} /> Salvar
-            </Button>
-          </div>
+    <main className="bg-surface relative flex min-h-svh flex-1 flex-col overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundColor: configuration.layout.backgroundColor,
+          backgroundImage: "radial-gradient(#6f6f7a2b 1px, transparent 1px)",
+          backgroundSize: "16px 16px",
+        }}
+      />
+      <header className="pointer-events-none fixed top-3 left-3 right-3 z-50 h-12">
+        <div className="pointer-events-auto absolute left-0 top-0 flex items-center gap-2">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                type="button"
+                size="icon"
+                className="h-11 w-11 rounded-full bg-surface-container-low/95 shadow-lg backdrop-blur-sm"
+              >
+                <Menu className="size-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-72 bg-surface-container-low">
+              <SheetHeader>
+                <SheetTitle className="font-headline text-left text-primary">
+                  Design Studio
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="mt-6 flex flex-col gap-1">
+                {floatingNav.map((item) => (
+                  <SheetClose key={item.to} asChild>
+                    <Link
+                      to={item.to}
+                      className="flex items-center gap-3 rounded-xl py-2.5 pr-4 pl-3 font-label text-xs font-medium tracking-wider text-slate-700 uppercase hover:bg-surface-container-highest hover:text-primary"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">
+                        {item.icon}
+                      </span>
+                      {item.title}
+                    </Link>
+                  </SheetClose>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
 
-        <TabsContent value="config">
-          <ConfigTab />
-        </TabsContent>
-        <TabsContent value="questions">
-          <QuestionsTab />
-        </TabsContent>
-      </Tabs>
-      <BuildTools />
-      <BuildCarousel />
+        <div className="pointer-events-auto absolute right-0 top-0 flex items-center gap-2">
+          <div className="rounded-2xl border border-outline-variant/15 bg-surface-container-low/95 px-2 py-1 shadow-lg backdrop-blur-sm">
+            <BuildTools />
+          </div>
+        </div>
+      </header>
+
+      <div className="relative min-h-svh flex-1 overflow-hidden">
+        <QuestionsTab
+          leftPanelOpen={leftPanelOpen}
+          rightPanelOpen={rightPanelOpen}
+          onToggleLeftPanel={() => setLeftPanelOpen((prev) => !prev)}
+          onToggleRightPanel={() => setRightPanelOpen((prev) => !prev)}
+          leftPanelContent={leftPanelContent}
+          onLeftPanelContentChange={setLeftPanelContent}
+        />
+      </div>
+
+      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center">
+        <TooltipProvider>
+          <div className="pointer-events-auto flex w-max items-center gap-2 rounded-full border border-outline-variant/15 bg-surface-container-low/90 px-3 py-2 shadow-xl backdrop-blur-sm">
+            {fieldTypes.map(({ type, label, icon: Icon }) => (
+              <Tooltip key={type}>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    size="icon"
+                    className="h-11 w-11 rounded-full shadow-md"
+                    variant="signature"
+                    onClick={() => createQuestion(type)}
+                  >
+                    <Icon className="size-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top" sideOffset={8}>
+                  Adicionar {label}
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+        </TooltipProvider>
+      </div>
+
+      <div className="fixed right-4 bottom-4 z-50 md:hidden">
+        <Button
+          type="button"
+          size="icon"
+          className="h-11 w-11 rounded-full shadow-lg"
+          onClick={() => navigate("/dashboard/projects")}
+          title="Voltar para projetos"
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+        </Button>
+      </div>
     </main>
   );
 }

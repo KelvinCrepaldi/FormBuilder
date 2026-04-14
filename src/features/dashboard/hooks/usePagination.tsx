@@ -19,8 +19,10 @@ export default function useProjects() {
     getList();
   }, [projects]);
 
-  const handleDelete = (ref: string) => {
-    deleteProjectByRef(ref);
+  const handleDelete = async (ref: string) => {
+    await deleteProjectByRef(ref);
+    const list = await projects();
+    setProjectList(list);
   };
 
   const filtered = projectList.filter(

@@ -12,6 +12,8 @@ export type questionTypes = {
   position: number;
   type: formLayoutTypes;
   options?: optionTypes[];
+  placeholder?: string;
+  description?: string;
 };
 
 export type optionTypes = {

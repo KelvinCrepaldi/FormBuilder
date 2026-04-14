@@ -32,51 +32,55 @@ export default function DashboardProjectPage() {
   const [listStyle, setListStyle] = useState<string>("list");
 
   return (
-    <div className="w-full h-full flex flex-col gap-4">
-      <SiteHeader title="Projetos" />
-      {/* Input de filtro */}
-      <ListTools
-        listStyle={listStyle}
-        setListStyle={setListStyle}
-        filter={filter}
-        onChange={setFilter}
-      />
-      <div className="flex-1">
-        {listStyle === "list" && (
-          <ListStyle handleDelete={handleDelete} list={paginated} />
-        )}
+    <div className="flex min-h-full flex-col gap-6">
+      <SiteHeader title="Todos os projetos" subtitle="Biblioteca" />
 
-        {listStyle === "card" && (
-          <CardStyle handleDelete={handleDelete} list={paginated} />
+      <div className="mx-auto w-full max-w-7xl flex-1 space-y-6 px-4 pb-10 sm:px-6 lg:px-8">
+        <ListTools
+          listStyle={listStyle}
+          setListStyle={setListStyle}
+          filter={filter}
+          onChange={setFilter}
+        />
+
+        <div className="flex-1">
+          {listStyle === "list" && (
+            <ListStyle handleDelete={handleDelete} list={paginated} />
+          )}
+
+          {listStyle === "card" && (
+            <CardStyle handleDelete={handleDelete} list={paginated} />
+          )}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between rounded-2xl border border-outline-variant/10 bg-surface-container-low px-4 py-3">
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-xl"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            >
+              Anterior
+            </Button>
+            <span className="text-sm text-on-surface-variant">
+              Página {currentPage} de {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded-xl"
+              disabled={currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+            >
+              Próxima
+            </Button>
+          </div>
         )}
       </div>
-
-      {/* Controles de paginação */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-4 p-8">
-          <Button
-            variant="default"
-            size="sm"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          >
-            Anterior
-          </Button>
-          <span className="text-sm text-muted-foreground">
-            Página {currentPage} de {totalPages}
-          </span>
-          <Button
-            variant="default"
-            size="sm"
-            disabled={currentPage === totalPages}
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-          >
-            Próxima
-          </Button>
-        </div>
-      )}
     </div>
   );
 }
@@ -86,62 +90,77 @@ const ListStyle = ({
   handleDelete,
 }: {
   list: DatabaseProjectTypes[];
-  handleDelete: (ref: string) => void;
+  handleDelete: (ref: string) => void | Promise<void>;
 }) => {
   return (
-    <div className="flex-1 overflow-auto px-8 ">
-      <Table className="overflow-y-auto ">
-        <TableHeader>
-          <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Título</TableHead>
-            <TableHead>Descrição</TableHead>
-            <TableHead>Passos</TableHead>
-            <TableHead className="text-right">Ações</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {list.length > 0 ? (
-            list.map((project) => (
-              <TableRow key={project.ref}>
-                <TableCell>{project.id}</TableCell>
-                <TableCell>{project.title}</TableCell>
-                <TableCell>{project.description}</TableCell>
-                <TableCell>{project.questions.length}</TableCell>
-                <TableCell className="flex gap-2 justify-end">
-                  <Button size="sm" variant="outline" asChild>
-                    <LinkElement
-                      to={`/f/${project.ref}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+    <Card className="editorial-shadow overflow-hidden rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-lowest">
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="font-label text-xs font-semibold uppercase">
+                Ref
+              </TableHead>
+              <TableHead className="font-label text-xs font-semibold uppercase">
+                Título
+              </TableHead>
+              <TableHead className="font-label text-xs font-semibold uppercase">
+                Descrição
+              </TableHead>
+              <TableHead className="font-label text-xs font-semibold uppercase">
+                Perguntas
+              </TableHead>
+              <TableHead className="text-right font-label text-xs font-semibold uppercase">
+                Ações
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {list.length > 0 ? (
+              list.map((project) => (
+                <TableRow key={project.ref}>
+                  <TableCell className="font-mono text-xs">{project.ref}</TableCell>
+                  <TableCell className="font-medium">{project.title}</TableCell>
+                  <TableCell className="max-w-xs truncate text-muted-foreground">
+                    {project.description}
+                  </TableCell>
+                  <TableCell>{project.questions.length}</TableCell>
+                  <TableCell className="flex justify-end gap-2">
+                    <Button size="sm" variant="outline" className="rounded-lg" asChild>
+                      <LinkElement
+                        to={`/f/${project.ref}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Link />
+                      </LinkElement>
+                    </Button>
+                    <CopyButton text={JSON.stringify(project, null, 2)} />
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="rounded-lg"
+                      onClick={() => void handleDelete(project.ref)}
                     >
-                      <Link />
-                    </LinkElement>
-                  </Button>
-                  <CopyButton text={JSON.stringify(project, null, 2)} />
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(project.ref)}
-                  >
-                    <Trash />
-                  </Button>
+                      <Trash />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="py-12 text-center text-on-surface-variant"
+                >
+                  Nenhum projeto encontrado.
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell
-                colSpan={5}
-                className="text-center text-muted-foreground"
-              >
-                Nenhum projeto encontrado.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </Card>
   );
 };
 
@@ -150,19 +169,21 @@ const CardStyle = ({
   handleDelete,
 }: {
   list: DatabaseProjectTypes[];
-  handleDelete: (ref: string) => void;
+  handleDelete: (ref: string) => void | Promise<void>;
 }) => {
   return (
-    <div className="px-10 flex justify-start gap-6 flex-wrap ">
+    <div className="flex flex-wrap justify-start gap-6">
       {list.map((project) => (
         <Card
           key={project.ref}
-          className="min-w-sm p-5 w-full flex-1 max-h-[180px]"
+          className="editorial-shadow flex min-h-[200px] w-full max-w-sm flex-1 flex-col gap-4 rounded-2xl border border-outline-variant/10 bg-surface-container-lowest p-6"
         >
-          <h1 className="text-xl font-bold">{project.title}</h1>
-          <div>{project.description}</div>
-          <div className="flex gap-2 justify-end">
-            <Button size="sm" variant="outline" asChild>
+          <h2 className="font-headline text-xl font-bold">{project.title}</h2>
+          <p className="flex-1 text-sm text-on-surface-variant">
+            {project.description}
+          </p>
+          <div className="flex flex-wrap justify-end gap-2">
+            <Button size="sm" variant="outline" className="rounded-lg" asChild>
               <LinkElement
                 to={`/f/${project.ref}`}
                 target="_blank"
@@ -175,7 +196,8 @@ const CardStyle = ({
             <Button
               size="sm"
               variant="destructive"
-              onClick={() => handleDelete(project.ref)}
+              className="rounded-lg"
+              onClick={() => void handleDelete(project.ref)}
             >
               <Trash />
             </Button>

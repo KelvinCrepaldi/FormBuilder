@@ -25,11 +25,30 @@ export default function SelectQuestion({
   formData,
   nextFn,
   onAnswer,
+  builderPreview,
 }: {
   formData: questionTypes;
   nextFn?: () => void;
   onAnswer?: (id: string, value: any) => void;
+  builderPreview?: boolean;
 }): React.JSX.Element {
+  const ph =
+    formData.placeholder?.trim() || "Selecione...";
+
+  if (builderPreview) {
+    return (
+      <div className="pointer-events-none flex w-full flex-col gap-3 text-left">
+        {formData.description ? (
+          <p className="text-sm opacity-70">{formData.description}</p>
+        ) : null}
+        <div className="text-lg font-semibold">{formData.text}</div>
+        <div className="rounded-md border bg-background/50 px-3 py-2 text-muted-foreground">
+          {ph}
+        </div>
+      </div>
+    );
+  }
+
   type FormType = z.infer<typeof schema>;
 
   const form = useForm<FormType>({
@@ -40,7 +59,7 @@ export default function SelectQuestion({
   });
 
   const onHandleSubmit = (data: FormType): void => {
-    onAnswer?.(formData.id, data.value); // ← salvar respostas
+    onAnswer?.(formData.id, data.value);
 
     if (nextFn) nextFn();
   };
@@ -51,15 +70,20 @@ export default function SelectQuestion({
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -50, opacity: 0 }}
       transition={{ duration: 0.3, type: "tween", ease: "anticipate" }}
-      className="flex flex-col items-center p-5 md:p-10 gap-10 border rounded-xl bg-white max-w-xl w-full"
+      className="flex w-full max-w-xl flex-col items-start gap-10 rounded-xl border bg-white p-5 md:p-10"
     >
-      <div className="text-2xl font-bold mb-10">{formData.text}</div>
+      {formData.description ? (
+        <p className="w-full text-left text-sm text-muted-foreground">
+          {formData.description}
+        </p>
+      ) : null}
+      <div className="mb-10 w-full text-left text-2xl font-bold">{formData.text}</div>
 
       <FormProvider {...form}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onHandleSubmit)}
-            className="flex flex-col w-full gap-4"
+            className="flex w-full flex-col gap-4"
           >
             <FormField
               control={form.control}
@@ -69,7 +93,7 @@ export default function SelectQuestion({
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecione..." />
+                        <SelectValue placeholder={ph} />
                       </SelectTrigger>
 
                       <SelectContent>

@@ -1,13 +1,19 @@
-import Header from "../components/header";
-import Hero from "../components/hero";
+import { LandingNav } from "../components/landing-nav";
+import { LandingHero } from "../components/landing-hero";
+import { LandingBento } from "../components/landing-bento";
+import { LandingCta } from "../components/landing-cta";
+import { LandingFooter } from "../components/landing-footer";
 
 export default function LandingPage() {
   return (
-    <section className="flex flex-col items-center bg-gradient-to-r from-slate-50 to-slate-100 min-h-screen z-10">
-      <Header />
-      <div className="w-full max-w-7xl flex flex-1 items-center">
-        <Hero />
-      </div>
-    </section>
+    <div className="bg-surface text-on-surface min-h-screen">
+      <LandingNav />
+      <main className="pt-20">
+        <LandingHero />
+        <LandingBento />
+        <LandingCta />
+      </main>
+      <LandingFooter />
+    </div>
   );
 }

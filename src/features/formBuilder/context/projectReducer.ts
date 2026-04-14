@@ -4,6 +4,7 @@ export type LayoutMode = "single_page" | "step_by_step";
 export type ProjectLayout = {
   font: string;
   fontSize: number;
+  titleFontSize: number;
   primaryColor: string;
   backgroundColor: string;
   showProgressBar: boolean;
@@ -21,6 +22,7 @@ export type ProjectReducerState = {
 export const defaultLayout: ProjectLayout = {
   font: "Inter",
   fontSize: 16,
+  titleFontSize: 32,
   primaryColor: "#000000",
   backgroundColor: "#ffffff",
   showProgressBar: true,
@@ -42,6 +44,7 @@ export type ProjectAction =
   // Layout actions:
   | { type: "set_font"; font: string }
   | { type: "set_font_size"; fontSize: number }
+  | { type: "set_title_font_size"; titleFontSize: number }
   | { type: "set_primary_color"; color: string }
   | { type: "set_background_color"; color: string }
   | { type: "set_progress_bar"; visible: boolean }
@@ -83,6 +86,11 @@ export function projectReducer(
     case "set_font_size":
       return updateLayout(state, {
         fontSize: Math.max(8, Math.min(action.fontSize, 48)), // clamp
+      });
+
+    case "set_title_font_size":
+      return updateLayout(state, {
+        titleFontSize: Math.max(12, Math.min(action.titleFontSize, 64)),
       });
 
     case "set_primary_color":

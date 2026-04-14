@@ -30,6 +30,7 @@ const initialReducer = {
     layout: {
       font: "Inter",
       fontSize: 16,
+      titleFontSize: 32,
       primaryColor: "#000000",
       backgroundColor: "#ffffff",
       showProgressBar: true,

@@ -1,23 +1,22 @@
-import { db } from "@/database/dexie";
+import { projectService } from "@/services/projects/projectService";
+import { useCallback } from "react";
 
 export default function useDB() {
-  const projects = async () => {
-    const projects = await db.DBproject.toArray();
-    return projects;
-  };
+  const projects = useCallback(async () => {
+    return projectService.list();
+  }, []);
 
-  const getProjectById = async (ref: string) => {
-    return await db.DBproject.where("ref").equals(ref).first();
-  };
+  const getProjectById = useCallback(async (ref: string) => {
+    return projectService.getByRef(ref);
+  }, []);
 
-  const deleteProjectByRef = async (ref: string) => {
-    return await db.DBproject.where("ref").equals(ref).delete();
-  };
+  const deleteProjectByRef = useCallback(async (ref: string) => {
+    await projectService.deleteByRef(ref);
+  }, []);
 
-  const clearProjects = async () => {
-  return await db.DBproject.clear();
-};
-
+  const clearProjects = useCallback(async () => {
+    await projectService.clearAll();
+  }, []);
 
   return { projects, getProjectById, deleteProjectByRef, clearProjects };
 }

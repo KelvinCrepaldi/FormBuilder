@@ -2,45 +2,89 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { GripVertical, Trash2 } from "lucide-react";
 import useQuestions from "../hooks/useQuestions";
-import useHorizontalDrag from "../hooks/useHorizontalDrag";
-export default function BuildCarousel() {
-  const { questions, deleteQuestion, setActive, active } = useQuestions();
-  const dragRef = useHorizontalDrag();
+import { Reorder } from "framer-motion";
+import { useMemo } from "react";
+import { cn } from "@/lib/utils";
+
+export default function BuildCarousel({
+  orientation = "horizontal",
+}: {
+  orientation?: "horizontal" | "vertical";
+}) {
+  const { questions, deleteQuestion, setActive, active, setQuestionOrder } =
+    useQuestions();
+
+  const sorted = useMemo(
+    () => [...questions].sort((a, b) => a.position - b.position),
+    [questions]
+  );
+
+  const vertical = orientation === "vertical";
 
   return (
-    <div
-      className="w-full flex flex-col flex-1"
-      style={{ maxWidth: "calc(100vw - var(--sidebar-width) - 1px) " }}
-    >
-      <div ref={dragRef} className="px-4 py-2 flex gap-2 overflow-x-auto">
-        {questions.map((item, index) => (
-          <Card
-            className={`relative bg-gray-50 cursor-pointer flex flex-row gap-2 p-2 items-center max-w-[250px] w-full min-w-[250px] h-[100px] ${
-              item.id === active && "bg-white shadow"
-            }`}
-            key={item.id}
-            onClick={() => setActive(item.id)}
-          >
-            <Button variant={"ghost"} className="cursor-grab">
-              <GripVertical />
-            </Button>
-            <div className="absolute top-2 right-4 opacity-30">{index + 1}</div>
-            <div className="w-full">
-              {item.text.slice(0, 13) || "Sem título"}
-            </div>
-            <div className="flex justify-end items-end h-full">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => deleteQuestion(item.id)}
+    <div className="flex h-full flex-col" role="toolbar" aria-label="Ordenar campos">
+      <div
+        className={cn(
+          "flex min-h-0 flex-1 px-2 py-2",
+          vertical ? "overflow-y-auto overflow-x-hidden" : "overflow-x-auto"
+        )}
+      >
+        <Reorder.Group
+          axis={vertical ? "y" : "x"}
+          values={sorted}
+          onReorder={(newOrder) => {
+            setQuestionOrder(newOrder.map((q) => q.id));
+          }}
+          className={cn(
+            "gap-1.5",
+            vertical ? "flex w-full flex-col" : "flex w-max min-w-full"
+          )}
+        >
+          {sorted.map((item) => (
+            <Reorder.Item
+              key={item.id}
+              value={item}
+              className="relative shrink-0 list-none"
+            >
+              <Card
+                className={cn(
+                  "relative flex cursor-grab flex-row items-center gap-1 overflow-hidden rounded-xl p-1.5 active:cursor-grabbing",
+                  vertical ? "h-14 w-full" : "h-12 w-[10rem]",
+                  item.id === active
+                    ? "border-primary bg-surface-container-lowest editorial-shadow"
+                    : "border-outline-variant/20 bg-surface-container-low hover:bg-surface-container-high"
+                )}
+                onClick={() => setActive(item.id)}
               >
-                <Trash2 />
-              </Button>
-            </div>
-          </Card>
-        ))}
+                <span className="shrink-0 text-on-surface-variant" aria-hidden>
+                  <GripVertical className="size-3.5" />
+                </span>
+                <div className="absolute top-1 right-2 text-[10px] opacity-40">
+                  {item.position + 1}
+                </div>
+                <div className="line-clamp-2 w-full flex-1 pr-8 text-[11px] font-medium leading-tight">
+                  {item.text.slice(0, 72) || "Sem título"}
+                </div>
+                <div className="absolute right-1 bottom-1 z-10">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    type="button"
+                    className="h-6 w-6 cursor-pointer p-0"
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteQuestion(item.id);
+                    }}
+                  >
+                    <Trash2 className="size-3" />
+                  </Button>
+                </div>
+              </Card>
+            </Reorder.Item>
+          ))}
+        </Reorder.Group>
       </div>
-      <div className="w-full h-3 border-t"></div>
     </div>
   );
 }

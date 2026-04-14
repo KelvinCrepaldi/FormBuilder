@@ -23,11 +23,35 @@ export default function RadioQuestion({
   formData,
   nextFn,
   onAnswer,
+  builderPreview,
 }: {
   formData: questionTypes;
   nextFn?: () => void;
   onAnswer?: (id: string, value: any) => void;
+  builderPreview?: boolean;
 }): React.JSX.Element {
+  if (builderPreview) {
+    return (
+      <div className="pointer-events-none flex w-full flex-col gap-3 text-left">
+        {formData.description ? (
+          <p className="text-sm opacity-70">{formData.description}</p>
+        ) : null}
+        <div className="text-lg font-semibold">{formData.text}</div>
+        <div className="flex flex-col gap-2">
+          {formData?.options?.map((option) => (
+            <div
+              key={option.id}
+              className="flex items-center justify-between rounded border px-3 py-2"
+            >
+              <span>{option.label || "Opção"}</span>
+              <span className="h-4 w-4 rounded-full border-2 border-current" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   type FormType = z.infer<typeof schema>;
 
   const form = useForm<FormType>({
@@ -38,7 +62,7 @@ export default function RadioQuestion({
   });
 
   const onHandleSubmit = (data: FormType): void => {
-    onAnswer?.(formData.id, data.value); // ← salvar respostas
+    onAnswer?.(formData.id, data.value);
 
     if (nextFn) nextFn();
   };
@@ -49,16 +73,21 @@ export default function RadioQuestion({
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -50, opacity: 0 }}
       transition={{ duration: 0.3, type: "tween", ease: "anticipate" }}
-      className="flex w-full flex-col items-center p-5 md:p-10 gap-5 md:gap-10 border rounded-xl bg-white max-w-xl"
+      className="flex w-full max-w-xl flex-col items-start gap-5 rounded-xl border bg-white p-5 md:gap-10 md:p-10"
     >
-      <div className="text-2xl font-bold mb-10">{formData.text}</div>
+      {formData.description ? (
+        <p className="w-full text-left text-sm text-muted-foreground">
+          {formData.description}
+        </p>
+      ) : null}
+      <div className="mb-10 w-full text-left text-2xl font-bold">{formData.text}</div>
 
       <FormProvider {...form}>
         <Form {...form}>
           <form
             id="multistepform"
             onSubmit={form.handleSubmit(onHandleSubmit)}
-            className="flex flex-col h-full items-center w-full gap-3"
+            className="flex h-full w-full flex-col items-start gap-3"
           >
             <FormField
               control={form.control}
@@ -79,8 +108,8 @@ export default function RadioQuestion({
                           transition={{ duration: 0.3, delay: 0.1 * index }}
                           className="w-full"
                         >
-                          <FormItem className="border flex justify-between items-center px-2 rounded w-full">
-                            <FormLabel className="w-full p-3 cursor-pointer">
+                          <FormItem className="flex w-full items-center justify-between rounded border px-2">
+                            <FormLabel className="w-full cursor-pointer p-3">
                               {option.label}
                             </FormLabel>
                             <FormControl>

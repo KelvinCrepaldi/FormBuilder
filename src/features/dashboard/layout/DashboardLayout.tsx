@@ -1,22 +1,18 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
-
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import DashboardSidebar from "../components/dashboardSidebar";
+import { DashboardMobileBar } from "../components/dashboardMobileBar";
 
 export default function DashboardLayout() {
-  return (
-    <SidebarProvider>
-      <DashboardSidebar />
+  const { pathname } = useLocation();
+  const isBuilder = pathname === "/builder";
 
-      <main className="flex flex-1 bg-sidebar">
-        <div className="flex flex-1 w-full border-l">
-          <div className="flex flex-1 flex-col">
-            <div className="w-full max-w-full flex-1 bg-white overflow-hidden" >
-              <Outlet />
-            </div>
-          </div>
-        </div>
+  return (
+    <div className="bg-surface text-on-surface min-h-svh">
+      {!isBuilder && <DashboardSidebar />}
+      {!isBuilder && <DashboardMobileBar />}
+      <main className={isBuilder ? "min-h-svh" : "min-h-svh md:ml-64"}>
+        <Outlet />
       </main>
-    </SidebarProvider>
+    </div>
   );
 }

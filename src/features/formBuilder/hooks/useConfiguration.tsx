@@ -32,6 +32,10 @@ export default function useConfiguration() {
     rootDispatch({ type: "set_font_size", fontSize });
   };
 
+  const setTitleFontSize = (titleFontSize: number) => {
+    rootDispatch({ type: "set_title_font_size", titleFontSize });
+  };
+
   const setPrimaryColor = (color: string) => {
     rootDispatch({ type: "set_primary_color", color });
   };
@@ -63,6 +67,7 @@ export default function useConfiguration() {
     // layout fields
     setFont,
     setFontSize,
+    setTitleFontSize,
     setPrimaryColor,
     setBackgroundColor,
     setProgressBarVisible,

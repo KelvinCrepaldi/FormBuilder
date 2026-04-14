@@ -54,6 +54,26 @@ export default function useQuestions() {
     });
   };
 
+  const updateQuestionPlaceholder = (questionId: string, placeholder: string) => {
+    rootDispatch({
+      type: "update_question_placeholder",
+      questionId,
+      placeholder,
+    });
+  };
+
+  const updateQuestionDescription = (questionId: string, description: string) => {
+    rootDispatch({
+      type: "update_question_description",
+      questionId,
+      description,
+    });
+  };
+
+  const setQuestionOrder = (orderedIds: string[]) => {
+    rootDispatch({ type: "set_question_order", orderedIds });
+  };
+
   return {
     questions: rootState.questions,
     active,
@@ -62,6 +82,9 @@ export default function useQuestions() {
     duplicateQuestion,
     deleteQuestion,
     updateQuestionText,
+    updateQuestionPlaceholder,
+    updateQuestionDescription,
+    setQuestionOrder,
     createOption,
     deleteOption,
     updateOptionText,

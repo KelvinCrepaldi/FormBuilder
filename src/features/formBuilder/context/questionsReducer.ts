@@ -6,6 +6,16 @@ export type QuestionsAction =
   | { type: "duplicate_question"; questionId: string }
   | { type: "delete_question"; questionId: string }
   | { type: "update_text"; questionId: string; text: string }
+  | {
+      type: "update_question_placeholder";
+      questionId: string;
+      placeholder: string;
+    }
+  | {
+      type: "update_question_description";
+      questionId: string;
+      description: string;
+    }
   | { type: "create_option"; questionId: string }
   | { type: "delete_option"; questionId: string; optionId: string }
   | {
@@ -14,6 +24,7 @@ export type QuestionsAction =
       optionId: string;
       label: string;
     }
+  | { type: "set_question_order"; orderedIds: string[] }
   | { type: "reset" };
 
 export function questionsReducer(
@@ -28,6 +39,8 @@ export function questionsReducer(
         options: [{ id: crypto.randomUUID(), label: "", value: "" }],
         position: state.length,
         type: action.formType as formLayoutTypes,
+        placeholder: "",
+        description: "",
       };
       return [...state, newForm];
     }
@@ -40,9 +53,11 @@ export function questionsReducer(
         text: original.text + " (copy)",
         id: crypto.randomUUID(),
         position: state.length,
+        placeholder: original.placeholder ?? "",
+        description: original.description ?? "",
         options: original.options?.map((opt) => ({
           ...opt,
-          id: crypto.randomUUID(), // garante independência
+          id: crypto.randomUUID(),
         })),
       };
 
@@ -55,6 +70,18 @@ export function questionsReducer(
     case "update_text":
       return state.map((f) =>
         f.id === action.questionId ? { ...f, text: action.text } : f
+      );
+    case "update_question_placeholder":
+      return state.map((f) =>
+        f.id === action.questionId
+          ? { ...f, placeholder: action.placeholder }
+          : f
+      );
+    case "update_question_description":
+      return state.map((f) =>
+        f.id === action.questionId
+          ? { ...f, description: action.description }
+          : f
       );
     case "create_option":
       return state.map((f) =>
@@ -88,6 +115,14 @@ export function questionsReducer(
             }
           : f
       );
+    case "set_question_order": {
+      const map = new Map(state.map((q) => [q.id, q] as const));
+      const reordered = action.orderedIds
+        .map((id) => map.get(id))
+        .filter((q): q is DatabaseQuestionsTypes => q != null);
+      const remaining = state.filter((q) => !action.orderedIds.includes(q.id));
+      return [...reordered, ...remaining].map((q, i) => ({ ...q, position: i }));
+    }
     case "reset":
       return [];
     default:

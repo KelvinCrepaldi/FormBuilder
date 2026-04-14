@@ -18,19 +18,21 @@ export default function BuildOption({
   const { deleteOption, updateOptionText } = useQuestions();
 
   return (
-    <div className="flex items-center justify-between gap-2">
+    <div className="flex items-center justify-between gap-1">
       <Input
         value={option.label}
         onChange={(e) => updateOptionText(formId, option.id, e.target.value)}
-        placeholder={`Digite a ${position}ª opção...`}
+        placeholder={`${position}ª opção`}
+        className="h-8 rounded-md text-sm"
       />
 
       <Button
-        variant={"outline"}
-        className="text-red-600"
+        variant="outline"
+        size="icon"
+        className="h-8 w-8 shrink-0 text-red-600"
         onClick={() => deleteOption(formId, option.id)}
       >
-        <X />
+        <X className="size-3.5" />
       </Button>
     </div>
   );

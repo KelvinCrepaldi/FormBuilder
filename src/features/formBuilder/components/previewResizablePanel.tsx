@@ -46,12 +46,18 @@ export default function PreviewResizablePanel() {
   );
 }
 
-export function QuestionRenderer({ form }: { form: questionTypes }) {
+export function QuestionRenderer({
+  form,
+  builderPreview,
+}: {
+  form: questionTypes;
+  builderPreview?: boolean;
+}) {
   const Component = QUESTION_TEMPLATES[form.type];
 
   if (!Component) {
     return <div>Tipo desconhecido: {form.type}</div>;
   }
 
-  return <Component formData={form} />;
+  return <Component formData={form} builderPreview={builderPreview} />;
 }

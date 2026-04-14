@@ -33,6 +33,8 @@ export type DatabaseQuestionsTypes = {
   position: number;
   type: formLayoutTypes;
   options?: DatabaseOptionTypes[];
+  placeholder?: string;
+  description?: string;
 };
 
 export type DatabaseOptionTypes = {
